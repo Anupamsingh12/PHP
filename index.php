@@ -713,7 +713,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                 </div>
                 <div class="col-lg-4 offset-md-3 offset-lg-0 col-md-6 off-testi">
-
                   <div class="card">
                     <img class="card-img-top img-responsive" src="assets/images/c1.jpg" alt="">
                     <div class="card-body">
