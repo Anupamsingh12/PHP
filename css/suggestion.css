@@ -1,13 +1,18 @@
+.autocomplete{
+  position: relative;
+}
+
 .autocomplete-items {
     position: absolute;
     border: 1px solid #d4d4d4;
+    background-color: white;
     border-bottom: none;
     border-top: none;
     z-index: 99;
     /*position the autocomplete items to be the same width as the container:*/
-    top: 100%;
-    left: 0;
-    right: 0;
+    top: calc(100% - 10px);
+    left: 12px;
+    right: 38px;
   }
   .autocomplete-items div {
     padding: 10px;
