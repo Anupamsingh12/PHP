@@ -966,7 +966,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     function getLocations(text) {
-      return fetch("/getcities.php?key=" + text).then(e => e.json())
+      return fetch("getcities.php?limit=10&key=" + text).then(e => e.json())
     }
   </script>
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
