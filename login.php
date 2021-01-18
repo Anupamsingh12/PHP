@@ -36,11 +36,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
  
   			$email = (string) test_input($_POST["email"]);
   
-  			$password = test_input($_POST["password"]);
+			  $password = test_input($_POST["password"]);
+			  
+			  $password=md5($password);
   
     		$user='root';
     		$pass = '';
-    		$db='tripzilaa';
+			$db='tripzilaa';
+			
 
     		$db= mysqli_connect('localhost',$user,$pass,$db) or die("unable to connect");
    			//echo "connection eastiblished","<br>";
@@ -63,9 +66,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
        				header("Location: index.php");
  
  			//echo $_SESSION['user']['firstName'];
- 				}
+				 }
+				 else{
+					 echo "<h3 style='color:#f35b5c' > incorrect password </h3>";
+				 }
  			}
  		else{
+			 echo " if you have error validating your otp ,try after 24 hour ";
  			header("Location:login.php?error=".urlencode("account not found"));
  		}
 	}
@@ -92,7 +99,7 @@ function test_input($data) {
                     </div>
 					<div class="form-right-inf"> <?php 
 												if(isset($_GET['error'])){
-													echo "<h3 style='color:#f35b5c'> email or password incorrect</h3>";
+													echo "<h3 style='color:#f35b5c'> account not found</h3>";
 												}
 														?>
 							<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="signin-form">	
@@ -106,6 +113,7 @@ function test_input($data) {
 								<div  class="form-input"><button class="btn">Login</button></div>
 							</div>
 							<h6 class="already"> Dont have an account? <a href="register.php"><span>Register Here<span></span></span></a></h6>
+							<h6 class="already"> go for admin ? <a href="admin/login.html"><span>admin<span></span></span></a></h6>
 						</form>
 						
                     </div>

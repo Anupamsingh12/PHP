@@ -1,7 +1,9 @@
 <?php
+  
 
-$message = $_GET["message"];
-$to = $_GET["to"];
+function sendEmail($to,$message){
+
+
 
 $params = [
     'personalizations' => [
@@ -10,14 +12,14 @@ $params = [
                 ["email" => $to, "name" => "John Doe"],
                 // other emails
             ],
-            "subject" => "Hello, world!"
+            "subject" => "Account verification"
         ]
     ],
     'from' => [
-        "email" => "ashutosh.empli5@gmail.com", "name" => "John Doe"
+        "email" => "anupmsingh12@gmail.com", "name" => "tripzilaa"
     ],
     'reply_to' => [
-        "email" => "ashutosh.empli5@gmail.com", "name" => "John Doe"
+        "email" => "supprt@tripzilaa.com", "name" => "tripzilaa"
     ],
     "content" => [
         [
@@ -31,10 +33,7 @@ $params = [
 $query = http_build_query($params);
 
 
-$headers = array(
-    "Authorization: Bearer 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",
-    "Content-Type: application/json"
-);
+
 
 $curl = curl_init();
 
@@ -48,7 +47,7 @@ curl_setopt_array($curl, array(
     CURLOPT_CUSTOMREQUEST => "POST",
     CURLOPT_POSTFIELDS => json_encode($params),
     CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer <<SENDGRID_API_KEY>>",
+        "authorization: Bearer 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",
         "content-type: application/json"
     ),
 ));
@@ -64,3 +63,7 @@ if ($err) {
     var_dump($response);
     echo "Message sent to $to: " . $message;
 }
+
+}
+
+?>

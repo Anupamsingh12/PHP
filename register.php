@@ -23,7 +23,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 <?php
-  
+  require 'communication/sendMail.php';
   // define variables and set to empty values
   $email=$gender = $password1=$password2 = $phone= "";
 
@@ -42,18 +42,43 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       $db='tripzilaa';
 
       $db=new mysqli('localhost',$user,$pass,$db) or die("unable to connect");
-      echo "password matched ","<br>";
+      //echo "password matched ","<br>";
 
+      $qr = "SELECT * from `passenger` where email= '$email' ";
+      $r = mysqli_query($db, $qr);
+      $result = mysqli_fetch_all($r, MYSQLI_ASSOC);
+      //var_dump($result);
 
-      $password2=md5($password2);  //hashing paswword in database
+      if ($result) {
+        echo "email already exist";
+        }
+      else{
+
+        $password2=md5($password2);  //hashing paswword in database
     
+      
 
 
-      // $sql = "INSERT INTO passenger (email,password,phone,gender)VALUES ('john@example.com','dfdf','John', 'Doe') "; 
+        $otp=rand(100000,999999);
+        //echo $otp;
+        session_start();
+        $_SESSION["conf_otp"]=$otp;
+        $_SESSION["email"]=$email;
+        
+
+        try{
+          sendEmail($email,"your otp for tripzilaa acount is:$otp");
+          }
+        catch(Exception $error){
+        var_dump($error);
+        }
+        header("Location:confirmation.php");
+
+      
       $sql ="INSERT INTO passenger (firstName,lastName,email,password)VALUES ('$firstname','$lastname','$email','$password2')";
 
       if ($db->query($sql) === TRUE) {
-        echo "New record created successfully";
+        //echo "New record created successfully";
     }
     else {
       echo "Error: " . $sql . "<br>" . $db->error;
@@ -61,12 +86,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
   }
-  else
-    echo "password is not same";
+  
   
 
-  }
+  
+}
+else{
+  echo "password not matched";
+}
 
+}
 function test_input($data) {
   $data = trim($data);
   $data = stripslashes($data);
