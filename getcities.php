@@ -13,7 +13,7 @@ require "connect.php";
 // ];
 $key = $_GET['key'];
 $limit = $_GET['limit'];
-$qr = "SELECT * from `cities` where city_name like '$key%' limit $limit";
+$qr = "SELECT * from `statelist` where city_name like '$key%' limit $limit";
 $r = mysqli_query($db, $qr);
 $arr = [];
 $result = mysqli_fetch_all($r, MYSQLI_ASSOC);

@@ -8,9 +8,37 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $pickup_location = $drop_location = "";
 
-  $starting_point = (string) test_input($_POST["starting_point"]);
+  $starting_point = $_POST["starting_point"];
 
-  $ending_point = test_input($_POST["ending_point"]);
+  $ending_point =$_POST["ending_point"];
+  $date=$_POST["date"];
+  $roundtrip=$_POST['roundtrip'];
+
+  echo $starting_point;
+  echo $ending_point;
+  require "statelist.php";
+  
+  $x= get_cordinate($starting_point);
+  $start=explode(" ",$x);
+
+  $y=get_cordinate($ending_point);
+  $end=explode(" ",$y);
+
+
+  function calculateDistance($lat1, $long1, $lat2, $long2){
+    $theta = $long1 - $long2;
+    $miles = (sin(deg2rad($lat1))) * sin(deg2rad($lat2)) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+    $miles = acos($miles);
+    $miles = rad2deg($miles);
+    $result['miles'] = $miles * 60 * 1.1515;
+    $result['feet'] = $result['miles']*5280;
+    $result['yards'] = $result['feet']/3;
+    $result['kilometers'] = $result['miles']*1.609344;
+    $result['meters'] = $result['kilometers']*1000;
+    return $result['kilometers'] *100/80;
+  }
+
+ $dist= (calculateDistance($start[0],$start[1],$end[0],$end[1]));
 
   $user = 'root';
   $pass = '';
@@ -41,7 +69,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = htmlspecialchars($data);
     return $data;
   }
+  
+  $_SESSION["booking_data"]=[
+    "ending_point"=>$ending_point,
+    "starting_point"=>$starting_point,
+    "dist"=>$dist,
+    "roundtrip"=>$roundtrip,
+    "date"=>$date];
+
+  header("Location:car_selection.php");
 }
+
+
+
 ?>
 
 <!doctype html>
@@ -141,7 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="column1">
 
 
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <form autocomplete="off" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
               <div class="blog-search form d-flex search-form autocomplete">
                 <input type="search" class="form-control cities" placeholder="Enter Pickup Location" name="starting_point" required="required">
 
@@ -152,11 +192,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <div class="blog-search form d-flex search-form">
-                <input type="date" class="form-control" name="date" required="required">
+                <input type="date" class="form-control" name="date" required="required"><a>round trip </a>
+                <input type="checkbox" id="roundtrip" name="roundtrip" value="True" roundtrip>
+             
+                
               </div>
+            
+             
 
+              
+              
 
-              <button type="submit" class="btn">Search Cab</button>
+              <button type="submit" name="search_cab" class="btn">Search Cab</button>
+              
             </form>
           </div>
 
